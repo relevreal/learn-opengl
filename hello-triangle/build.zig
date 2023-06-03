@@ -7,7 +7,7 @@ pub fn build(b: *Builder) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const exe = b.addExecutable(.{
-        .name = "introduction-exe",
+        .name = "hello-triangle",
         .root_source_file = .{ .path = "src/main.zig" },
         .target = target,
         .optimize = optimize,
@@ -15,10 +15,10 @@ pub fn build(b: *Builder) void {
 
     // includes
     exe.addIncludePath("/usr/local/include");
-    exe.addIncludePath("deps/include");
+    exe.addIncludePath("../deps/include");
 
     // sources
-    exe.addCSourceFile("deps/src/glad.c", &[_][]const u8{"-std=c99"});
+    exe.addCSourceFile("../deps/src/glad.c", &[_][]const u8{"-std=c99"});
 
     switch (currentTarget.os.tag) {
         .linux => {
@@ -39,17 +39,4 @@ pub fn build(b: *Builder) void {
 
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);
-    // const run_step = b.step("run", "Run the app");
-    // run_step.step.dependOn(&run_cmd.step);
-    // const compile_step = b.step("compile", "Compiles src/main.zig");
-    // compile_step.dependOn(&exe.step);
-
-    // const install_step = b.addInstallArtifact(compile_step);
-    // install_step.step.dependOn(b.getInstallStep());
-
-    // const run_cmd = b.addRunArtifact(exe);
-    // run_cmd.step.dependOn(b.getInstallStep());
-
-    // const run_step = b.step("run", "Run the app");
-    // run_step.dependOn(&run_cmd.step);
 }

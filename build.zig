@@ -7,18 +7,19 @@ pub fn build(b: *Builder) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const exe = b.addExecutable(.{
-        .name = "shaders",
-        .root_source_file = .{ .path = "src/main.zig" },
+        .name = "hello-triangle",
+        .root_source_file = .{ .path = "src/1_3_1_shaders.zig" },
         .target = target,
         .optimize = optimize,
     });
 
     // includes
     exe.addIncludePath("/usr/local/include");
-    exe.addIncludePath("../deps/include");
+    exe.addIncludePath("deps/include");
 
     // sources
-    exe.addCSourceFile("../deps/src/glad.c", &[_][]const u8{"-std=c99"});
+    exe.addCSourceFile("deps/src/glad.c", &[_][]const u8{"-std=c99"});
+    exe.addCSourceFile("deps/src/stb_image_impl.c", &[_][]const u8{"-std=c99"});
 
     switch (currentTarget.os.tag) {
         .linux => {
